@@ -20,7 +20,8 @@ class LocalDB:
             os.mknod('./Guide.undb')
             with open('./Guide.undb', 'w') as self.dbData:
                 split = os.path.split(self.path)
-                self.dbData.write('Name:' + split[1])
+                split_text = os.path.splitext(split[1])
+                self.dbData.write('Name:' + split_text[0])
         except FileExistsError:
             self.delete_all(self.path)
             os.rmdir(self.path)
