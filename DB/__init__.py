@@ -19,9 +19,11 @@ class LocalDB:
                 os.mkdir('./' + i)
             os.mknod('./Guide.undb')
             with open('./Guide.undb', 'w') as self.dbData:
-                self.dbData.write('po')
+                split = os.path.split(self.path)
+                self.dbData.write('Name:' + split[1])
         except FileExistsError:
             self.delete_all(self.path)
+            os.rmdir(self.path)
 
     def __enter__(self, path: str):
         self.path = path
