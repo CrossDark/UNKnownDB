@@ -1,3 +1,3 @@
-import SQL
-sql = SQL.LocalDB()
+import DB
+sql = DB.LocalDB()
 sql.create()

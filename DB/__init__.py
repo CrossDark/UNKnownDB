@@ -1,12 +1,13 @@
-"""A SQL"""
+"""A DB"""
 import os
+import shutil
 
 
 class LocalDB:
     def __init__(self):
         self.path = ''
-        self.sql = None
-        self.sqlData = None
+        self.db = None
+        self.dbData = None
 
     def create(self, path='./.Clever.undb'):
         self.path = path
@@ -17,8 +18,10 @@ class LocalDB:
             for i in base_path:
                 os.mkdir('./' + i)
             os.mknod('./Guide.undb')
+            with open('./Guide.undb', 'w') as self.dbData:
+                self.dbData.write('po')
         except FileExistsError:
-            pass
+            self.delete_all(self.path)
 
     def __enter__(self, path: str):
         self.path = path
@@ -29,6 +32,18 @@ class LocalDB:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.sql = None
         self.sqlData = None
+
+    def delete_all(self, delete_path):
+        if not os.listdir(delete_path):
+            pass
+        else:
+            for i in os.listdir(delete_path):
+                path_file = os.path.join(delete_path, i)
+                if os.path.isfile(path_file):
+                    os.remove(path_file)
+                else:
+                    self.delete_all(path_file)
+                    shutil.rmtree(path_file)
 
 
 class WebDB:
