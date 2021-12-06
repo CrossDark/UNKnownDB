@@ -9,19 +9,23 @@ class LocalDB:
         self.db = None
         self.dbData = None
 
-    def create(self, path='./.Clever.undb'):
+    def create(self, path='./.Clever.unp'):
         self.path = path
-        base_path = ['.OBJECT.undb', '.MAPPING.undb']
+        base_path = ['.OBJECT.unp', '.MAPPING.unp']
         try:
             os.mkdir(self.path)
             os.chdir(self.path)
             for i in base_path:
                 os.mkdir('./' + i)
-            os.mknod('./Guide.undb')
-            with open('./Guide.undb', 'w') as self.dbData:
+            os.mknod('./Guide.unp')
+            with open('./Guide.unp', 'w') as self.dbData:
                 split = os.path.split(self.path)
                 split_text = os.path.splitext(split[1])
-                self.dbData.write('Name:' + split_text[0])
+                self.dbData.write(
+                    'Name:' + split_text[0] + '\n'
+                    'IP: <None>\n'
+                    'Port:4466 \n'
+                                  )
         except FileExistsError:
             self.delete_all(self.path)
             os.rmdir(self.path)
