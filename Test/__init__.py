@@ -1,3 +1,4 @@
 import DB
-sql = DB.LocalDB()
-sql.create()
+import UNDL.Interpreter
+undl = UNDL.Interpreter.Interpreter('./.Clever.unp/Guide.unp')
+undl.name()
