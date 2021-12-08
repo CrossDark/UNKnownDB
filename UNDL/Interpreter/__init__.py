@@ -14,7 +14,7 @@ class Interpreter:
 
     def name(self):
         for code in self.code:
-            self.Name = re.match("Name:(.*)", code)
+            self.Name = re.match(r'^Name(.){2,20}', code)
             print(self.Name)
             if self.Name:
                 break
