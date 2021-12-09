@@ -9,6 +9,7 @@ class Interpreter:
     def __init__(self, undl):
         self.undl = undl
         self.Name = None
+        self.IP = None
         with open(self.undl) as code:
             self.code = code.readlines()
 
@@ -23,10 +24,10 @@ class Interpreter:
 
     def ip(self):
         for code in self.code:
-            self.Name = re.match(r'^IP:(\d){4}', code)
-            if self.Name is not None:
+            self.IP = re.findall('^IP:(.+?)\n', code)
+            if self.IP is not None:
                 break
-        return self.Name
+        return self.IP
 
     def interpret(self):
         for code in self.code:
