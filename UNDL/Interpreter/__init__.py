@@ -14,13 +14,19 @@ class Interpreter:
 
     def name(self):
         for code in self.code:
-            self.Name = re.match(r'^Name(.){2,20}', code)
-            print(self.Name)
+            self.Name = re.findall('^Name:(.+?)\n', code)
             if self.Name:
                 break
             else:
                 self.Name = None
-        print(self.Name)
+        return self.Name
+
+    def ip(self):
+        for code in self.code:
+            self.Name = re.match(r'^IP:(\d){4}', code)
+            if self.Name is not None:
+                break
+        return self.Name
 
     def interpret(self):
         for code in self.code:
