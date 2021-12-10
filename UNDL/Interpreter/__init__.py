@@ -10,6 +10,7 @@ class Interpreter:
         self.undl = undl
         self.Name = None
         self.IP = None
+        self.Port = None
         with open(self.undl) as code:
             self.code = code.readlines()
 
@@ -25,10 +26,13 @@ class Interpreter:
     def ip(self):
         for code in self.code:
             self.IP = re.findall('^IP:(.+?)\n', code)
-            if self.IP is not None:
+            if self.IP:
                 break
         return self.IP
 
-    def interpret(self):
+    def port(self):
         for code in self.code:
-            re.findall(re.compile("r[Name](.*?)"), code)
+            self.Port = re.findall('^Port:(.+?)\n', code)
+            if self.Port:
+                break
+        return self.Port
