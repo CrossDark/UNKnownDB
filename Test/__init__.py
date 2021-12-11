@@ -3,3 +3,4 @@ import UNDL.Interpreter
 undl = UNDL.Interpreter.Interpreter('./.Clever.unp/Guide.unp')
 print(undl.Code)
 print(undl.form())
+print(undl.create_form)

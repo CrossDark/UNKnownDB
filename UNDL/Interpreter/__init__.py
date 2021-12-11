@@ -6,13 +6,15 @@ import re
 
 
 class Interpreter:
+
     def __init__(self, undl):
         self.Undl = undl
         self.Name = None
         self.IP = None
         self.Port = None
         self.Form = None
-        self.FormIndex = None
+        self.FormIndex = []
+        self.FormHead = []
         with open(self.Undl) as code:
             self.Code = code.readlines()
 
@@ -46,7 +48,13 @@ class Interpreter:
                 self.Form = re.findall('^Form:(.+?)\n', code)
             if self.Form:
                 form = True
-            self.FormIndex = re.findall('^[ ]{4}Head:(.+?)\n', code)
-            if self.FormIndex:
-                pass
-        return self.Form, self.FormIndex
+            if form:
+                self.FormIndex.append(re.findall('^[ ]{4}(.+?)\n', code))
+        return self.FormIndex
+
+    def create_form(self):
+        for form in self.FormIndex:
+            self.FormHead.append(re.findall('^[.]{0,20}:(.+?)\n', form))
+            if form:
+                break
+        return self.FormHead
