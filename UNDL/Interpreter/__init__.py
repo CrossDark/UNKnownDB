@@ -5,7 +5,7 @@ import UNDL
 import re
 
 
-class Interpreter:
+class Base:
 
     def __init__(self, undl):
         self.Undl = undl
@@ -18,6 +18,8 @@ class Interpreter:
         with open(self.Undl) as code:
             self.Code = code.readlines()
 
+
+class Guide(Base):
     def name(self):
         for code in self.Code:
             self.Name = re.findall('^Name:(.+?)\n', code)
@@ -41,6 +43,8 @@ class Interpreter:
                 break
         return self.Port
 
+
+class Form(Base):
     def form(self):
         form = False
         for code in self.Code:
@@ -53,8 +57,8 @@ class Interpreter:
         return self.FormIndex
 
     def create_form(self):
-        for form in self.FormIndex:
-            self.FormHead.append(re.findall('^[.]{0,20}:(.+?)\n', form))
-            if form:
-                break
-        return self.FormHead
+        form = list(re.findall('^(.+?):(.+?)[|]', self.FormIndex[1][0])[0])[0]
+        for form_data in self.FormIndex:
+            form_list = re.findall('^[.]{0,20}:(.+?)', form_data)
+            form[form_list[0]] = form_list[1]
+        return form
