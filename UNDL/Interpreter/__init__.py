@@ -15,6 +15,8 @@ class Base:
         self.Form = None
         self.FormIndex = []
         self.FormHead = []
+        self.FormApply = []
+        self.FormDict = {}
         with open(self.Undl) as code:
             self.Code = code.readlines()
 
@@ -54,11 +56,16 @@ class Form(Base):
                 form = True
             if form:
                 self.FormIndex.append(re.findall('^[ ]{4}(.+?)\n', code))
+        self.FormIndex.remove([])
         return self.FormIndex
 
     def create_form(self):
-        form = list(re.findall('^(.+?):(.+?)[|]', self.FormIndex[1][0])[0])[0]
+        self.FormApply.append(list(re.findall('^(.+?):(.+?)[|]', self.FormIndex[1][0])[0])[0])
+        form = []
         for form_data in self.FormIndex:
-            form_list = re.findall('^[.]{0,20}:(.+?)', form_data)
+            form_str = re.findall('^(.+?):(.+?)[|]', form_data[0])
+            form_list = list(form_str[0])
+            print(form_list[0])
             form[form_list[0]] = form_list[1]
-        return form
+        self.FormDict = form
+        return form, form
