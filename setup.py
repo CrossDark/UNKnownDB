@@ -5,7 +5,7 @@ with open('./LICENSE') as description:
     long = description.read()
 setup(
     name='UNKnownDB',
-    version='0.0',
+    version='1.1',
     author='CleaverCreator',
     author_email='liuhanbo333@icloud.com',
     packages=find_packages(),

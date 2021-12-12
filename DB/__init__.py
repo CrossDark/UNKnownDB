@@ -1,16 +1,16 @@
 """A DB"""
 import os
 import shutil
+import UNDL.Interpreter
 
 
 class LocalDB:
-    def __init__(self):
-        self.path = ''
+    def __init__(self, path):
+        self.path = path
         self.db = None
         self.dbData = None
 
-    def create(self, path='./.Clever.unp'):
-        self.path = path
+    def create(self):
         base_path = ['.OBJECT.unp', '.MAPPING.unp']
         try:
             os.mkdir(self.path)
@@ -30,11 +30,8 @@ class LocalDB:
             self.delete_all(self.path)
             os.rmdir(self.path)
 
-    def __enter__(self, path: str):
-        self.path = path
-        os.chdir(self.path)
-        with open('./Guide.undb.info', 'rb') as self.sql:
-            self.sqlData = self.sql.read()
+    def __enter__(self):
+        return UNDL.Interpreter.Form(self.path)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.sql = None

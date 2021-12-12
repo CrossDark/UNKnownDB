@@ -16,7 +16,7 @@ class Base:
         self.Form = None
         self.FormIndex = []
         self.FormHead = []
-        self.FormApply = []
+        self.FormApply = {}
         self.FormDict = {}
         with open(self.Undl) as code:
             self.Code = code.readlines()
@@ -46,6 +46,12 @@ class Guide(Base):
                 break
         return self.Port
 
+    def start(self):
+        self.name()
+        self.ip()
+        self.port()
+        return [self.Name, self.IP, self.Port]
+
 
 class Form(Base):
     def form(self):
@@ -61,12 +67,11 @@ class Form(Base):
         return self.FormIndex
 
     def create_form(self):
-        self.FormApply.append(list(re.findall('^(.+?):(.+?)[|]', self.FormIndex[1][0])[0])[0])
-        form = []
+        form = {}
         for form_data in self.FormIndex:
-            form_str = re.findall('^(.+?):(.+?)[|]', form_data[0])
+            form_str = re.findall('^(.+?):(.+?)$', form_data[0])
             form_list = list(form_str[0])
-            print(form_list[0])
             form[form_list[0]] = form_list[1]
         self.FormDict = form
-        return form, form
+        self.FormApply[self.Form[0]] = form
+        return self.FormApply
