@@ -31,7 +31,7 @@ class LocalDB:
             os.rmdir(self.path)
 
     def __enter__(self):
-        return UNDL.Interpreter.Form(self.path)
+        return UNDL.Interpreter.Guide(self.path)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.sql = None

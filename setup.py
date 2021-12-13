@@ -1,11 +1,9 @@
 from setuptools import setup, find_packages
 
 
-with open('./LICENSE') as description:
-    long = description.read()
 setup(
     name='UNKnownDB',
-    version='1.1',
+    version='1.3',
     author='CleaverCreator',
     author_email='liuhanbo333@icloud.com',
     packages=find_packages(),
@@ -15,5 +13,5 @@ setup(
     description='A new DB',
     license='A2.0',
     url='https://github.com/CleverCreater/UNKnownDB',
-    long_description=long
+    classifiers=[]
 )
