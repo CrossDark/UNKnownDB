@@ -1,7 +1,7 @@
 """A DB"""
 import os
 import shutil
-import UNDL.Interpreter
+from UNKnownDB import UNDL
 
 
 class LocalDB:
@@ -17,8 +17,8 @@ class LocalDB:
             os.chdir(self.path)
             for i in base_path:
                 os.mkdir('./' + i)
-            os.mknod('./Guide.unp')
-            with open('./Guide.unp', 'w') as self.dbData:
+            os.mknod('./Guide.undb')
+            with open('./Guide.undb', 'w') as self.dbData:
                 split = os.path.split(self.path)
                 split_text = os.path.splitext(split[1])
                 self.dbData.write(
@@ -31,7 +31,7 @@ class LocalDB:
             os.rmdir(self.path)
 
     def __enter__(self):
-        return UNDL.Interpreter.Guide(self.path)
+        return UNDL.Interpreter
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.sql = None

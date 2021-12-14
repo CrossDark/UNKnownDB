@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='UNKnownDB',
-    version='1.3',
+    version='1.4',
     author='CleaverCreator',
     author_email='liuhanbo333@icloud.com',
     packages=find_packages(),
@@ -11,7 +11,8 @@ setup(
     platforms=['Linux'],
     install_requires=[],
     description='A new DB',
-    license='A2.0',
+    long_description='A DB',
+    license='GIL',
     url='https://github.com/CleverCreater/UNKnownDB',
     classifiers=[]
 )

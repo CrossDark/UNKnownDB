@@ -1,10 +1,10 @@
 Metadata-Version: 1.0
 Name: UNKnownDB
-Version: 1.2
+Version: 1.4
 Summary: A new DB
 Home-page: https://github.com/CleverCreater/UNKnownDB
 Author: CleaverCreator
 Author-email: liuhanbo333@icloud.com
-License: A2.0
-Description: UNKNOWN
+License: GIL
+Description: A DB
 Platform: Linux
