@@ -22,6 +22,14 @@ class Base:
             self.Code = code.readlines()
 
 
+class Interpret:
+    def __init__(self, undl):
+        with open(undl) as self.undl:
+            self.code = self.undl.readlines()
+        find = (re.findall('^(Guide|Form|Relation):$(.+?)', code) for code in self.code)
+        print(str(find))
+
+
 class Guide(Base):
     def name(self):
         for code in self.Code:
