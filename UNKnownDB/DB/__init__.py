@@ -17,14 +17,17 @@ class LocalDB:
             os.chdir(self.path)
             for i in base_path:
                 os.mkdir('./' + i)
-            os.mknod('./Guide.undb')
-            with open('./Guide.undb', 'w') as self.dbData:
+            os.mknod('./Guide.undl')
+            with open('./Guide.undl', 'w') as self.dbData:
                 split = os.path.split(self.path)
                 split_text = os.path.splitext(split[1])
                 self.dbData.write(
                     'Name:' + split_text[0] + '\n'
                     'IP: <None>\n'
                     'Port:4466 \n'
+                    'Form:try\n'
+                    '    Head:clever creator\n'
+                    '    Body:? |\n'
                                   )
         except FileExistsError:
             self.delete_all(self.path)

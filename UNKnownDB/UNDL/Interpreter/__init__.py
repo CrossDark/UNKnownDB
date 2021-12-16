@@ -25,7 +25,7 @@ class Base:
 class Guide(Base):
     def name(self):
         for code in self.Code:
-            self.Name = re.findall('^Name:(.+?)\n', code)
+            self.Name = re.findall('^Name:$(.+?)', code)
             if self.Name:
                 break
             else:
@@ -63,7 +63,10 @@ class Form(Base):
                 form = True
             if form:
                 self.FormIndex.append(re.findall('^[ ]{4}(.+?)\n', code))
-        self.FormIndex.remove([])
+        try:
+            self.FormIndex.remove([])
+        except ValueError:
+            pass
         return self.FormIndex
 
     def create(self):
@@ -78,3 +81,9 @@ class Form(Base):
 
     def change(self):
         pass
+
+    def index(self):
+        # key = self.FormApply[self.Form]['Head']
+        # key_list = key.split(' ')
+        keys = [[name, [[n, t.split] for n, t in things]] for name, things in self.FormApply.items()]
+        return keys
