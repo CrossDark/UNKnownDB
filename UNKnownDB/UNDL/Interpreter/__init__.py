@@ -25,15 +25,15 @@ class Base:
 class Interpret:
     def __init__(self, code_list):
         self.Guide = []
-        OnTabBlock = False
+        on_tab_block = False
         for code_str in code_list:
             code = re.findall('( {4})?(Guide|Form|Info|Python|Name|IP|Port|(.*)):(.)*?', code_str)
             print(code)
-            if code[0][1] == 'Guide' or guide is True:
+            if code[0][0] == '':
                 self.Guide.append(code[0][2])
-                guide = True
-            elif code[0][1] == '    ':
-                guide, form, info, python = False
+                on_tab_block = True
+            elif on_tab_block:
+                print(00)
         print(self.Guide)
 
 
