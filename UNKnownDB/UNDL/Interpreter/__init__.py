@@ -23,11 +23,18 @@ class Base:
 
 
 class Interpret:
-    def __init__(self, undl):
-        with open(undl) as self.undl:
-            self.code = self.undl.readlines()
-        find = (re.findall('^(Guide|Form|Relation):$(.+?)', code) for code in self.code)
-        print(str(find))
+    def __init__(self, code_list):
+        self.Guide = []
+        OnTabBlock = False
+        for code_str in code_list:
+            code = re.findall('( {4})?(Guide|Form|Info|Python|Name|IP|Port|(.*)):(.)*?', code_str)
+            print(code)
+            if code[0][1] == 'Guide' or guide is True:
+                self.Guide.append(code[0][2])
+                guide = True
+            elif code[0][1] == '    ':
+                guide, form, info, python = False
+        print(self.Guide)
 
 
 class Guide(Base):

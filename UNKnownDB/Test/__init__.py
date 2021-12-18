@@ -1,6 +1,10 @@
 # import DB
 from UNKnownDB.UNDL import Interpreter
-from UNKnownDB import DB
+# from UNKnownDB import DB
 
 
-inter = Interpreter.Interpret("./.Clever.unp/Guide.undl")
+with open('./.Clever.unp/Guide.undl') as code:
+    lines = code.readlines()
+inter = Interpreter.Interpret(lines)
+# db = DB.LocalDB("./.Clever.unp")
+# db.create()

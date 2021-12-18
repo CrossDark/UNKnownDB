@@ -1,7 +1,7 @@
 Guide:
-    Name:clever
-    Ip:[::]
-    Port:9900
+    Name:.Clever
+    IP: <None>
+    Port:4466 
 Form:try
     Head:clever creator
     Body:? |

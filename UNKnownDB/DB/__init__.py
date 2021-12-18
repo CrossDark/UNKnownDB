@@ -22,7 +22,7 @@ class LocalDB:
                 split = os.path.split(self.path)
                 split_text = os.path.splitext(split[1])
                 self.dbData.write(
-                    'Guide:'
+                    'Guide:\n'
                     '    Name:' + split_text[0].removesuffix('.') + '\n'
                     '    IP: <None>\n'
                     '    Port:4466 \n'
