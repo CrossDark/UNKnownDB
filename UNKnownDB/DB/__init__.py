@@ -1,6 +1,7 @@
 """A DB"""
 import os
 import shutil
+import sqlite3
 import UNKnownDB.UNDL.Interpreter
 
 
@@ -59,7 +60,9 @@ class WebDB:
         self.form = None
 
 
-class SQL:
-    def __init__(self, path):
-        self.sql = UNKnownDB.UNDL.Interpreter.Form(path)
-        self.form = self.sql.FormApply
+class SQLITE:
+    def __init__(self, path, sqlite):
+        self.connection = sqlite3.connect(sqlite)
+        self.cursor = self.connection.cursor()
+        self.db = UNKnownDB.UNDL.Interpreter.Interpret(path)
+        self.cursor.execute('create table none' + self.db.Form[0])

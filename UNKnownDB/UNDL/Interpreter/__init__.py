@@ -24,3 +24,8 @@ class Interpret:
 
     def change(self, search, changes):
         re.sub(search, changes, self.Code)
+
+
+class Form:
+    def __init__(self, form):
+        self.Form = form

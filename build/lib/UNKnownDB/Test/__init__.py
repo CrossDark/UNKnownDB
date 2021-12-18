@@ -1,7 +1,13 @@
 # import DB
-from UNKnownDB import DB
+from UNKnownDB.UNDL import Interpreter
+# from UNKnownDB import DB
 
-DB.LocalDB('.Clever.unp').create()
-with DB.LocalDB('./.Clever.unp/Guide.unp') as db:
-    db
-    print(db.FormApply)
+
+with open('./.Clever.unp/Guide.undl') as code:
+    lines = code.readlines()
+inter = Interpreter.Interpret(lines)
+form = Interpreter.Form(inter.Form)
+
+
+# db = DB.LocalDB("./.Clever.unp")
+# db.create()

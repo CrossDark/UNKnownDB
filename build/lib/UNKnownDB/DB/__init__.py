@@ -1,7 +1,8 @@
 """A DB"""
 import os
 import shutil
-from UNKnownDB import UNDL
+import sqlite3
+import UNKnownDB.UNDL.Interpreter
 
 
 class LocalDB:
@@ -17,21 +18,25 @@ class LocalDB:
             os.chdir(self.path)
             for i in base_path:
                 os.mkdir('./' + i)
-            os.mknod('./Guide.undb')
-            with open('./Guide.undb', 'w') as self.dbData:
+            os.mknod('./Guide.undl')
+            with open('./Guide.undl', 'w') as self.dbData:
                 split = os.path.split(self.path)
                 split_text = os.path.splitext(split[1])
                 self.dbData.write(
-                    'Name:' + split_text[0] + '\n'
-                    'IP: <None>\n'
-                    'Port:4466 \n'
+                    'Guide:\n'
+                    '    Name:' + split_text[0].removesuffix('.') + '\n'
+                    '    IP: <None>\n'
+                    '    Port:4466 \n'
+                    'Form:try\n'
+                    '    Head:clever creator\n'
+                    '    Body:? |\n'
                                   )
         except FileExistsError:
             self.delete_all(self.path)
             os.rmdir(self.path)
 
     def __enter__(self):
-        return UNDL.Interpreter
+        return UNKnownDB.UNDL.Interpreter
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.sql = None
@@ -53,3 +58,10 @@ class LocalDB:
 class WebDB:
     def __init__(self):
         self.form = None
+
+
+class SQLITE:
+    def __init__(self, path, sqlite):
+        self.sql = sqlite3.connect(sqlite)
+        self.db = UNKnownDB.UNDL.Interpreter.Interpret(path)
+        self.db.Form[0]
