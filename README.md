@@ -1,2 +1,2 @@
-# CleverSQL
-A new SQL
+# CleverDB
+A new DB
