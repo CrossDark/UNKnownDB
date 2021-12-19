@@ -18,7 +18,7 @@ class Interpret:
         on_tab_block = False
         on_key_block = None
         for code_str in code_list:
-            code = re.findall('( {4})?(Guide|Form|Info|Name|IP|Port|Head|Body):(.+)?', code_str)
+            code = re.findall('( {4})?(.+)(?!Guide|Form|Info|Name|IP|Port|Head|Body):(.+)?', code_str)
             if code[0][0] == '':
                 on_key_block = eval('self.' + str(code[0][1]))
                 on_tab_block = True
@@ -35,7 +35,7 @@ class Interpret:
         on_tab_block = False
         on_key_block = None
         for code_str in self.Code:
-            code = re.findall('( {4})?[A-Z][a-z]{1,20}(?!Guide|Form|Info|Name|IP|Port|Head):(.+)?', code_str)
+            code = re.findall('( {4})?(.+)(?!Guide|Form|Info|Name|IP|Port|Head):(.+)?', code_str)
             print(code)
             if code[0][0] == '':
                 on_key_block = eval('self.' + str(code[0][1]) + 'Dict')
