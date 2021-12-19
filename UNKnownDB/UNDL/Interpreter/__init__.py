@@ -25,7 +25,16 @@ class Interpret:
     def change(self, search, changes):
         re.sub(search, changes, self.Code)
 
+    def refactoring(self):
+        return self.Code.remove([])
+
 
 class Form:
-    def __init__(self, form):
-        self.Form = form
+    def __init__(self, form: []):
+        self.Form = [form_str.split(' ') for form_str in form]
+
+    def search(self, key_word):
+        pass
+
+    def find(self, *index, **name):
+        pass

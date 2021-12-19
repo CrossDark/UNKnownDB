@@ -1,10 +1,11 @@
 Metadata-Version: 1.0
 Name: UNKnownDB
-Version: 1.5
-Summary: A new DB
+Version: 1.5.1
+Summary: A new Python DB
 Home-page: https://github.com/CleverCreater/UNKnownDB
 Author: CleaverCreator
 Author-email: liuhanbo333@icloud.com
 License: GIL
-Description: A DB
+Description: A DB that human can read
+        Use Unknown Describe Language
 Platform: Linux
