@@ -12,6 +12,9 @@ class Interpret:
         self.Guide = []
         self.Form = []
         self.Info = []
+        self.GuideDict = {}
+        self.FormDict = {}
+        self.InfoDict = {}
         on_tab_block = False
         on_key_block = None
         for code_str in code_list:
@@ -27,6 +30,18 @@ class Interpret:
 
     def refactoring(self):
         return self.Code.remove([])
+
+    def dictionary(self):
+        on_tab_block = False
+        on_key_block = None
+        for code_str in self.Code:
+            code = re.findall('( {4})?(Guide|Form|Info|Name|IP|Port|Head[A-Z][a-z]{1, 20}):(.+)?', code_str)  # Problem
+            if code[0][0] == '':
+                on_key_block = eval('self.' + str(code[0][1]) + 'Dict')
+                on_tab_block = True
+            elif on_tab_block:
+                on_key_block[code[0][1]] = code[0][2]
+        return self.GuideDict, self.FormDict, self.InfoDict
 
 
 class Form:

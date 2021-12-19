@@ -6,7 +6,7 @@ from UNKnownDB.UNDL import Interpreter
 with open('./.Clever.unp/Guide.undl') as code:
     lines = code.readlines()
 inter = Interpreter.Interpret(lines)
-form = Interpreter.Form(inter.Form)
+print(inter.dictionary())
 
 
 # db = DB.LocalDB("./.Clever.unp")
