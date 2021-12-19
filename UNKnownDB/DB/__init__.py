@@ -61,8 +61,10 @@ class WebDB:
 
 
 class SQLITE:
-    def __init__(self, path, sqlite):
+    def __init__(self, path, sqlite, table):
         self.connection = sqlite3.connect(sqlite)
         self.cursor = self.connection.cursor()
         self.db = UNKnownDB.UNDL.Interpreter.Interpret(path)
-        self.cursor.execute('create table none' + self.db.Form[0])
+        self.cursor.execute('create table ' + table + self.db.Form[0])
+        self.cursor.close()
+        self.connection.commit()
