@@ -28,8 +28,8 @@ class LocalDB:
                     '    IP: <None>\n'
                     '    Port:4466 \n'
                     'Form:try\n'
-                    '    Head:clever creator\n'
-                    '    Body:? |\n'
+                    '    Head:clever creator is clever\n'
+                    '    Body:op po oo pp\n'
                                   )
         except FileExistsError:
             self.delete_all(self.path)
@@ -53,6 +53,9 @@ class LocalDB:
                 else:
                     self.delete_all(path_file)
                     shutil.rmtree(path_file)
+
+    def write(self):
+        pass
 
 
 class WebDB:

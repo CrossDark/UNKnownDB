@@ -3,6 +3,7 @@ UNDB
 Thanks:https://www.cnblogs.com/featherl/p/11075038.html
 """
 import tkinter
+import tkinter.messagebox
 from UNKnownDB.DB import LocalDB
 
 # 导入tkinter库
@@ -11,7 +12,6 @@ from UNKnownDB.DB import LocalDB
 win = tkinter.Tk()  # 创建窗口
 win.title('文本编辑器')  # 设置标题
 win['bg'] = '#0099ff'
-win.state('zoomed')
 win.iconify()
 
 entry_file = tkinter.Entry(win)  # 创建一个文本输入框，用来设置文件路径
