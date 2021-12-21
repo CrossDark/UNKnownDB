@@ -34,12 +34,11 @@ class Main:
                 self.Project = project
                 on_fielder = ''
                 path_file = os.path.join(self.Project, i)
-                if os.path.isfile(path_file):
-                    self.FileTree.insert(on_fielder, tkinter.END, text=path_file)
-                else:
+                if os.path.isdir(path_file):
                     self.file_tree(path_file)
-                    on_fielder = self.FileTree.insert('', tkinter.END, text=path_file, open=True)
-                    print(on_fielder)
+                    on_fielder = self.FileTree.insert('', index=tkinter.END, text=path_file, open=True)
+                else:
+                    self.FileTree.insert(on_fielder, tkinter.END, text=path_file)
         self.FileTree.pack()
 
     def main_loop(self):

@@ -4,11 +4,13 @@ import UNDL
 """
 __author__ = 'CleverCreator'
 import re
+import shelve
 
 
 class Interpret:
     def __init__(self, code_list):
         self.Code = code_list
+        self.Save = None
         self.Guide = []
         self.Form = []
         self.Info = []
@@ -42,6 +44,11 @@ class Interpret:
             elif on_tab_block:
                 on_key_block[code[0][1]] = code[0][2]
         return self.GuideDict, self.FormDict, self.InfoDict
+
+    def save(self, path: str):
+        with shelve.open(path + '.') as self.Save:
+            self.Save['Guide'] = self.GuideDict
+            self.Save['Form'] = self.FormDict
 
 
 class Form:
