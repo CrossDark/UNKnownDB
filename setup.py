@@ -11,8 +11,10 @@ setup(
     platforms=['Linux'],
     install_requires=[],
     description='A new Python DB',
-    long_description='A DB that human can read'
-                     'Use Unknown Describe Language',
+    long_description="""
+                    A DB that human can read
+                    'Use Unknown Describe Language
+                                    """,
     license='GIL',
     url='https://github.com/CleverCreater/UNKnownDB',
     classifiers=[]
