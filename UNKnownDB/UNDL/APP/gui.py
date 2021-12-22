@@ -1,111 +1,142 @@
-"""
-v
-"""
-from tkinter import *
-from tkinter.ttk import Scrollbar
-
-theme_color = {
-    'Default': '#000000.#FFFFFF',
-    'Grey model': '#83406A.#D1D4D1',
-    'Aquamarine': '#5B8340.#D1E7E0',
-    'Bold Beige': '#4B4620.#FFF0E1',
-    'Cobalt Blue': '#ffffBB.#3333aa',
-    'Olive Green': '#D1E7E0.#5B8340',
-    'Night Mode': '#FFFFFF.#000000',
-}
+# tkinter：文件系统遍历
+import tkinter as tk
+import os
+from time import sleep
 
 
-class EditorPlus(Tk):
-    def __init__(self):
-        super().__init__()
-        self._set_window_()
-        self._create_menu_bar_()
-        self._create_shortcut_bar_()
-        self._create_body_()
+class DirList(object):
+    def __init__(self, init_dir=os.curdir):
+        self.top = tk.Tk()
+        self.top.title('查找')
 
-    # 设置初始窗口的属性
-    def _set_window_(self):
-        self.title("EditorPlus")
-        self.geometry('650x450')
+        self.last = None
 
-    # 创建整个菜单栏
-    def _create_menu_bar_(self):
-        menu_bar = Menu(self)
-        # 创建文件的联级菜单
-        file_menu = Menu(menu_bar, tearoff=0)
-        file_menu.add_command(label='新建', accelerator='Ctrl+N')
-        file_menu.add_command(label='打开', accelerator='Ctrl+O')
-        file_menu.add_command(label='保存', accelerator='Ctrl+S')
-        file_menu.add_command(label='另存为', accelerator='Shift+Ctrl+S')
-        file_menu.add_separator()
-        file_menu.add_command(label='退出', accelerator='Alt+F4')
+        self.top.geometry('400x500')  # 设置窗口大小
+        self.label = tk.Label(self.top, text='文件列表', font='宋体 -16 bold')
+        self.label.pack()
 
-        # 在菜单栏上添加菜单标签，并将该标签与相应的联级菜单关联起来
-        menu_bar.add_cascade(label='文件', menu=file_menu)
+        # StringVar：字符串变量，特点是跟踪变量变化，及时显示在界面上
+        self.cwd = tk.StringVar(self.top)
+        self.cwd.set(init_dir)
 
-        # 创建编辑的联级菜单
-        edit_menu = Menu(menu_bar, tearoff=0)
-        edit_menu.add_command(label='撤销', accelerator='Ctrl+Z')
-        edit_menu.add_command(label='恢复', accelerator='Ctrl+Y')
-        edit_menu.add_separator()
-        edit_menu.add_command(label='剪切', accelerator='Ctrl+X')
-        edit_menu.add_command(label='复制', accelerator='Ctrl+C')
-        edit_menu.add_command(label='粘贴', accelerator='Ctrl+V')
-        edit_menu.add_separator()
-        edit_menu.add_command(label='查找', accelerator='Ctrl+F')
-        edit_menu.add_separator()
-        edit_menu.add_command(label='全选', accelerator='Ctrl+A')
-        menu_bar.add_cascade(label='编辑', menu=edit_menu)
+        # 当前目录显示标签
+        self.dir_l = tk.Label(self.top, fg='blue', font='Helvetica -14 bold')
+        self.dir_l.pack()
 
-        # 视图菜单
-        view_menu = Menu(menu_bar, tearoff=0)
-        show_line_number = IntVar()
-        show_line_number.set(1)
-        view_menu.add_checkbutton(label='显示行号', variable=show_line_number)
+        # 新建框体容器，存放文件列表和滚动条
+        self.dir_fm = tk.Frame(self.top)
+        # 滚动条
+        self.dir_sb = tk.Scrollbar(self.dir_fm)
+        self.dir_sb.pack(side=tk.RIGHT, fill=tk.Y)
+        # 列表框
+        self.dirs = tk.Listbox(self.dir_fm, height=23, width=60,
+                               font='Helvetica -14',
+                               yscrollcommand=self.dir_sb.set)
+        # 绑定setDirAndGo函数
+        self.dirs.bind('<Double-1>', self.setDirAndGo)
+        # 滑动框与列表关联
+        self.dir_sb.config(command=self.dirs.yview)
+        self.dirs.pack(side=tk.LEFT, fill=tk.X)
+        self.dir_fm.pack(fill=tk.BOTH)
 
-        highlight_line = IntVar()
-        view_menu.add_checkbutton(label='高亮当前行', onvalue=1, offvalue=0, variable=highlight_line)
+        # 输入框
+        self.dirn = tk.Entry(self.top, width=60, font='Helvetica -14',
+                             textvariable=self.cwd)
+        # 监听回车事件，绑定doLS函数，函数必须要有event参数
+        self.dirn.bind('<Return>', self.doLS)
+        self.dirn.pack(fill=tk.BOTH)
 
-        # 在主题菜单中再添加一个子菜单列表
-        themes_menu = Menu(menu_bar, tearoff=0)
-        view_menu.add_cascade(label='主题', menu=themes_menu)
+        # 功能按钮框架包括三个按钮：清除、查询和退出。
+        self.bfm = tk.Frame(self.top)
+        self.clr = tk.Button(self.bfm, text='清除', width=6, command=self.clrDir,
+                             activeforeground='white', activebackground='blue')
+        self.ls = tk.Button(self.bfm, text='查询', width=6, command=self.doLS,
+                            activeforeground='white', activebackground='green')
+        self.quit = tk.Button(self.bfm, text='退出', width=6, command=self.top.quit,
+                              activeforeground='white', activebackground='red')
+        self.clr.pack(side=tk.LEFT, fill=tk.BOTH)
+        self.ls.pack(side=tk.LEFT, fill=tk.BOTH)
+        self.quit.pack(side=tk.LEFT, fill=tk.BOTH)
+        self.bfm.pack()
 
-        theme_choice = StringVar()
-        theme_choice.set('Default')
-        for k in sorted(theme_color):
-            themes_menu.add_radiobutton(label=k, variable=theme_choice)
+    def clrDir(self, ev=None):
+        """清空文件路径输入框"""
+        self.cwd.set('')
 
-        menu_bar.add_cascade(label='视图', menu=view_menu)
+    def setDirAndGo(self, ev=None):
+        """设置文件路径并查询"""
+        self.last = self.cwd.get()
+        # 选中项背景默认为红色，后续修改为蓝色
+        self.dirs.config(selectbackground='red')
+        # 获取文件列表中选择项，没有选则输入框设置为当前目录路径
+        try:
+            # 获取目录列表中选中的文件名
+            check = self.dirs.get(self.dirs.curselection())
+        except FileNotFoundError:
+            return "没有文件或文件错误!"
 
-        about_menu = Menu(menu_bar, tearoff=0)
-        about_menu.add_command(label='关于')
-        about_menu.add_command(label='帮助')
-        menu_bar.add_cascade(label='关于', menu=about_menu)
-        self["menu"] = menu_bar
+        if not check:
+            check = os.curdir
+        self.cwd.set(check)
+        self.doLS()
 
-    # 创建快捷菜单栏
-    def _create_shortcut_bar_(self):
-        shortcut_bar = Frame(self, height=25, background='#20b2aa')
-        shortcut_bar.pack(fill='x')
+    def doLS(self, event=''):
+        """
+        查询文件路径
+        :param event:输入框回车事件触发参数
+        :return:无
+        """
+        error = ''
+        tdir = self.cwd.get()
+        if not tdir:
+            tdir = os.curdir
 
-    # 创建程序主体
-    def _create_body_(self):
-        # 创建行号栏 （take focus=0 屏蔽焦点）
-        line_number_bar = Text(self, width=4, padx=3, takefocus=0, border=0,
-                               background='#F0E68C', state='disabled')
-        line_number_bar.pack(side='left', fill='y')
+        # 判断输入框中文件是否存在
+        if not os.path.exists(tdir):
+            error = tdir + ': no such file!'
+        # 若文件存在，再判断是否是目录
+        elif not os.path.isdir(tdir):
+            error = tdir + ' is not directory!'
 
-        # 创建文本输入框
-        content_text = Text(self, wrap='word')
-        content_text.pack(expand=True, fill='both')
+        if error:
+            '''出现错误则提示在输入框内，2秒后还原'''
+            self.dirn.config(fg='red')  # 输入框提示文字变为红色
+            self.cwd.set(error)
+            self.top.update()
+            sleep(2)
+            if not (hasattr(self, 'last') and self.last):
+                '''使用hasattr函数判断对象是否含有last属性或方法'''
+                self.last = os.curdir
+            self.cwd.set(self.last)
+            self.dirs.config(selectbackground='LightSkyBlue')
+            self.dirn.config(fg='black')  # 输入框文字颜色还原
+            self.top.update()
+            return
 
-        # 创建滚动条
-        scroll_bar = Scrollbar(content_text)
-        scroll_bar["command"] = content_text.yview
-        content_text["yscrollcommand"] = scroll_bar.set
-        scroll_bar.pack(side='right', fill='y')
+        self.cwd.set('FETCHING DIRECTORY CONTENTS...')
+        self.top.update()
+
+        '''目录列表框操作'''
+        self.dirs.delete(0, tk.END)  # 清空目录列表
+        # self.dirs.insert(tk.END, os.cur-dir) # 添加当前目录"."
+        self.dirs.insert(tk.END, os.pardir)  # 添加上级目录".."
+
+        '''获取指定目录下的文件，在列表控件展示'''
+        dirlist = os.listdir(tdir)
+        dirlist.sort()
+        os.chdir(tdir)  # 改变目录到指定路径
+        for eachFile in dirlist:
+            self.dirs.insert(tk.END, eachFile)
+        self.cwd.set(os.getcwd())  # 在输入框中显示当前绝对路径
+        self.dir_l.config(text=os.getcwd())  # 上方标签显示当前路径
+        self.dirs.config(selectbackground='LightSkyBlue')  # 选中时背景色为蓝色
+        self.last = self.cwd.get()  # 记录最后一次路径
 
 
-if "__main__" == __name__:
-    app = EditorPlus()
-    app.mainloop()
+def main():
+    DirList('D:\\')
+    tk.mainloop()
+
+
+if __name__ == '__main__':
+    main()
