@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QFileSystemModel, QTreeView, QWidget, QVBoxLayout, QTableWidget
+from PyQt5.QtWidgets import *
 
 
 class App(QWidget):
@@ -9,12 +9,15 @@ class App(QWidget):
         self.title = 'UNDL IDE'
         self.left = 0
         self.top = 40
-        self.width = 1920
-        self.height = 1040
+        self.width = 1900
+        self.height = 1020
         self.init_ui()
         self.model = None
         self.tree = None
         self.app = None
+        self.setLayout = None
+        self.TableWidget = None
+        self.layout = None
 
     def init_ui(self):
         self.setWindowTitle(self.title)
@@ -36,9 +39,10 @@ class App(QWidget):
         self.show()
 
 
-class TextEdit(QWidget):
+class MainWindow(QMainWindow):
     def __init__(self):
-        super(TextEdit, self).__init__()
+        super(MainWindow, self).__init__()
+        self.setCentralWidget(App())
 
 
 if __name__ != '__main__':
