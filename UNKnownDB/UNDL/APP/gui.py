@@ -1,37 +1,41 @@
-# -*- coding: utf-8 -*-
+#QMenuBar/QMenu/QAction的使用(菜单栏）
+from PyQt5.QtWidgets import   QMenuBar,QMenu,QAction,QLineEdit,QStyle,QFormLayout,   QVBoxLayout,QWidget,QApplication ,QHBoxLayout, QPushButton,QMainWindow,QGridLayout,QLabel
+from PyQt5.QtCore import QDir
+from PyQt5.QtGui import QIcon,QPixmap,QFont
+from PyQt5.QtCore import  QDate
 
-# Form implementation generated from reading ui file 'a.ui'
-#
-# Created by: PyQt5 UI code generator 5.13.0
-#
-# WARNING! All changes made in this file will be lost!
+import sys
 
+class WindowClass(QMainWindow):
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+    def __init__(self,parent=None):
 
+        super(WindowClass, self).__init__(parent)
+        self.layout=QHBoxLayout()
+        self.menubar=self.menuBar()#获取窗体的菜单栏
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 600)
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setObjectName("centralwidget")
-        self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(330, 190, 151, 141))
-        self.label.setText("Hello World")
-        self.label.setObjectName("label")
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 23))
-        self.menubar.setObjectName("menubar")
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+        self.file=self.menubar.addMenu("系统菜单")
+        self.file.addAction("New File")
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.save=QAction("Save",self)
+        self.save.setShortcut("Ctrl+S")#设置快捷键
+        self.file.addAction(self.save)
 
-    def retranslateUi(self, MainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.edit=self.file.addMenu("Edit")
+        self.edit.addAction("copy")#Edit下这是copy子项
+        self.edit.addAction("paste")#Edit下设置paste子项
+
+        self.quit=QAction("Quit",self)#注意如果改为：self.file.addMenu("Quit") 则表示该菜单下必须柚子菜单项；会有>箭头
+        self.file.addAction(self.quit)
+        self.file.triggered[QAction].connect(self.processtrigger)
+        self.setLayout(self.layout)
+        self.setWindowTitle("Menu Demo")
+
+    def processtrigger(self,qaction):
+        print(qaction.text()+" is triggered!")
+
+if __name__=="__main__":
+    app=QApplication(sys.argv)
+    win=WindowClass()
+    win.show()
+    sys.exit(app.exec_())
