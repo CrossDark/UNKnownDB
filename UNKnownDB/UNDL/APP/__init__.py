@@ -3,7 +3,10 @@ import sys
 from PyQt5.Qt import *
 
 
-class App(QWidget):
+on_file = None
+
+
+class Tree(QWidget):
 
     def __init__(self):
         super().__init__()
@@ -40,6 +43,12 @@ class App(QWidget):
         self.show()
 
 
+class Project(QWidget):
+    def __init__(self):
+        super(Project, self).__init__()
+        self.name = QTextEdit()
+
+
 class File(QWidget):
     def __init__(self):
         super(File, self).__init__()
@@ -48,6 +57,14 @@ class File(QWidget):
     def text(self):
         self.textEdit = QTextEdit()
         self.textEdit.setGeometry(100, 100, 100, 30)
+        self.textEdit.setPlaceholderText('UNDL Code')
+        self.textEdit.setAutoFormatting(QTextEdit.AutoBulletList)
+        self.textEdit.setAutoFormatting(QTextEdit.AutoAll)
+        self.textEdit.setFontFamily('Quicksand')
+        self.textEdit.setFontWeight(QFont.Bold)
+        self.textEdit.setFontPointSize(15)
+        self.textEdit.setTextBackgroundColor(QColor(200, 200, 200))
+        on_file = self.textEdit.toPlainText()
 
         # 创建一个布局管理器
         self.setWindowTitle('File Edit')
@@ -57,13 +74,21 @@ class File(QWidget):
         self.show()
 
 
+class Right(QVBoxLayout):
+    def __init__(self):
+        super(Right, self).__init__()
+        self.addWidget(Tree())
+        self.addWidget(Project())
+
+
 class SPL(QSplitter):
     def __init__(self):
         super(SPL, self).__init__()
-        self.addWidget(App())
+        self.addWidget(Tree())
         file = File()
         file.text()
         self.addWidget(file)
+        self.setSizes([150, 500])
 
 
 class MainWindow(QMainWindow):

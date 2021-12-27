@@ -9,7 +9,7 @@ inter = Interpreter.Interpret(lines)
 inter.dictionary()
 form = Interpreter.Form(inter.Form, inter.FormDict)
 inter.dictionary()
-app = APP.App()
+app = APP.Tree()
 app.init_ui()
 if __name__ == '__main__':
     app = QApplication(sys.argv)
