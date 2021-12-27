@@ -1,6 +1,6 @@
 import sys
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon, QPixmap
+
+from PyQt5.Qt import *
 
 
 class App(QWidget):
@@ -40,18 +40,37 @@ class App(QWidget):
         self.show()
 
 
-class Tools(QToolBar):
+class File(QWidget):
     def __init__(self):
-        super(Tools, self).__init__()
-        action = QAction(QIcon('./Image/run.ico'), "Run", self)
-        self.addAction(action)
+        super(File, self).__init__()
+        self.textEdit = None
+
+    def text(self):
+        self.textEdit = QTextEdit()
+        self.textEdit.setGeometry(100, 100, 100, 30)
+
+        # 创建一个布局管理器
+        self.setWindowTitle('File Edit')
+        window_layout = QVBoxLayout()
+        window_layout.addWidget(self.textEdit)
+        self.setLayout(window_layout)
+        self.show()
+
+
+class SPL(QSplitter):
+    def __init__(self):
+        super(SPL, self).__init__()
+        self.addWidget(App())
+        file = File()
+        file.text()
+        self.addWidget(file)
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.pressed = None
-        self.setCentralWidget(App())
+        self.setCentralWidget(SPL())
         self.resize(1910, 1010)
         self.status = self.statusBar()
         self.status.showMessage('Nothing')
@@ -67,10 +86,18 @@ class MainWindow(QMainWindow):
         run = QAction(QIcon("/home/pi/PycharmProjects/UNKnownDB/UNKnownDB/UNDL/APP/Image/run.ico"), "run", self)
         tool.addAction(run)
         tool.actionTriggered[QAction].connect(self.tool_btn_pressed)
+        #
+        self.status = QStatusBar()
+        self.setStatusBar(self.status)
+        #
+        self.setWindowState(Qt.WindowMaximized)
         self.show()
 
     def tool_btn_pressed(self, q_action):
-        self.pressed = ("pressed too btn is", q_action.text())
+        self.pressed = str("pressed too btn is " + q_action.text())
+        if q_action == 'run':
+            pass
+        self.status.showMessage(self.pressed)
 
 
 if __name__ != '__main__':
