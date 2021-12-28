@@ -43,10 +43,14 @@ class Tree(QWidget):
         self.show()
 
 
-class Project(QWidget):
+class SQLConnect(QWidget):
     def __init__(self):
-        super(Project, self).__init__()
+        super(SQLConnect, self).__init__()
         self.name = QTextEdit()
+        window_layout = QVBoxLayout()
+        window_layout.addWidget(self.name)
+        self.setLayout(window_layout)
+        self.show()
 
 
 class File(QWidget):
@@ -63,7 +67,8 @@ class File(QWidget):
         self.textEdit.setFontFamily('Quicksand')
         self.textEdit.setFontWeight(QFont.Bold)
         self.textEdit.setFontPointSize(15)
-        self.textEdit.setTextBackgroundColor(QColor(200, 200, 200))
+        self.textEdit.setTextBackgroundColor(QColor(250, 250, 250))
+        global on_file
         on_file = self.textEdit.toPlainText()
 
         # 创建一个布局管理器
@@ -72,19 +77,30 @@ class File(QWidget):
         window_layout.addWidget(self.textEdit)
         self.setLayout(window_layout)
         self.show()
-
-
-class Right(QVBoxLayout):
+        
+        
+class Table(QWidget):
     def __init__(self):
-        super(Right, self).__init__()
-        self.addWidget(Tree())
-        self.addWidget(Project())
+        super(Table, self).__init__()
+
+
+class Left(QWidget):
+    def __init__(self):
+        super(Left, self).__init__()
+        self.block = QSplitter(Qt.Vertical)
+        self.block.addWidget(Tree())
+        self.block.addWidget(SQLConnect())
+        self.block.setSizes([200, 50])
+        window_layout = QVBoxLayout()
+        window_layout.addWidget(self.block)
+        self.setLayout(window_layout)
+        self.show()
 
 
 class SPL(QSplitter):
     def __init__(self):
         super(SPL, self).__init__()
-        self.addWidget(Tree())
+        self.addWidget(Left())
         file = File()
         file.text()
         self.addWidget(file)
@@ -128,5 +144,5 @@ class MainWindow(QMainWindow):
 if __name__ != '__main__':
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon(''))
-    ex = MainWindow()
+    window = MainWindow()
     sys.exit(app.exec_())
