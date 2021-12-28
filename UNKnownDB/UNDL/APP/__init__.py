@@ -3,7 +3,10 @@ import sys
 from PyQt5.Qt import *
 
 
-on_file = None
+on_file = ''
+in_file = ''
+open_file = ''
+close_file = ''
 
 
 class Tree(QWidget):
@@ -56,9 +59,6 @@ class SQLConnect(QWidget):
 class File(QWidget):
     def __init__(self):
         super(File, self).__init__()
-        self.textEdit = None
-
-    def text(self):
         self.textEdit = QTextEdit()
         self.textEdit.setGeometry(100, 100, 100, 30)
         self.textEdit.setPlaceholderText('UNDL Code')
@@ -97,13 +97,21 @@ class Left(QWidget):
         self.show()
 
 
+class Middle(QWidget):
+    def __init__(self):
+        super(Middle, self).__init__()
+        self.tab = QTabWidget()
+        self.tab.addTab(File(), 'main')
+        window_layout = QVBoxLayout()
+        window_layout.addWidget(self.tab)
+        self.setLayout(window_layout)
+
+
 class SPL(QSplitter):
     def __init__(self):
         super(SPL, self).__init__()
         self.addWidget(Left())
-        file = File()
-        file.text()
-        self.addWidget(file)
+        self.addWidget(Middle())
         self.setSizes([150, 500])
 
 
