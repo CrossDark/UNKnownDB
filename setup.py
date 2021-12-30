@@ -3,13 +3,13 @@ from setuptools import setup, find_packages
 
 setup(
     name='UNKnownDB',
-    version='1.5.7',
+    version='1.5.8',
     author='CleaverCreator',
     author_email='liuhanbo333@icloud.com',
     packages=find_packages(),
     zip_safe=False,
     platforms=['Linux'],
-    install_requires=[],
+    install_requires=['PyQt5'],
     description='A new Python DB',
     long_description="""
                     A DB that human can read
