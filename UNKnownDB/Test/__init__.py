@@ -1,15 +1,10 @@
 # import DB
-from UNKnownDB.UNDL import Interpreter, APP
-# from UNKnownDB import DB
+# from UNKnownDB.UNDL import Interpreter, APP
+from UNKnownDB.DB import LightDB
 
 
-with open('./.Clever.unp/Guide.undl') as code:
-    lines = code.readlines()
-inter = Interpreter.Interpret(lines)
-inter.dictionary()
-form = Interpreter.Form(inter.Form, inter.FormDict)
-inter.dictionary()
-app = APP.Tree()
-app.init_ui()
+with LightDB.File('./light') as db:
+    db += 'l'
+    print(db.DB)
 # db = DB.LocalDB("./.Clever.unp")
 # db.create()
