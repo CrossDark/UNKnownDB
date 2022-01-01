@@ -5,14 +5,16 @@ import os.path
 
 
 class File:
-    def __init__(self, path):
-        self.path = path
+    def __init__(self, path, name='light'):
+        self.path = path + '.unl'
+        self.name = name
 
     def __enter__(self,):
-        if os.path.isfile(self.path):
-            self.DB = open(self.path, 'r+')
-        else:
-            open(self.path, 'x')
+        if not os.path.isfile(self.path):
+            open_ = open(self.path, 'wb')
+            open_.write(bytes('' + self.name + '', 'UTF-8'))
+            open_.close()
+        self.DB = open(self.path, 'rb+')
         self.DB.readable()
         self.DB.writable()
         return self
@@ -21,6 +23,6 @@ class File:
         self.DB.close()
 
     def __add__(self, other):
-        self.DB.seek(10)
-        self.DB.write(other)
+        self.DB.seek(0)
+        self.DB.write(bytes(other, 'utf-8'))
         return self

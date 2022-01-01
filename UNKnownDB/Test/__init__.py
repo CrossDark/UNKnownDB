@@ -4,7 +4,8 @@ from UNKnownDB.DB import LightDB
 
 
 with LightDB.File('./light') as db:
-    db += 'l'
-    print(db.DB)
+    db += ''
+with open('./light') as light:
+    print(light.read())
 # db = DB.LocalDB("./.Clever.unp")
 # db.create()
