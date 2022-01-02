@@ -4,6 +4,10 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.mypy_cache/3.9" />
       <excludeFolder url="file://$MODULE_DIR$/build/bdist.linux-armv7l" />
+      <excludeFolder url="file://$MODULE_DIR$/build/lib/UNKnownDB/UNDL/APP/Image" />
+      <excludeFolder url="file://$MODULE_DIR$/UNKnownDB/Test/.Clever.unp/.MAPPING.unp" />
+      <excludeFolder url="file://$MODULE_DIR$/UNKnownDB/Test/.Clever.unp/.OBJECT.unp" />
+      <excludeFolder url="file://$MODULE_DIR$/dist" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
