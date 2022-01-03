@@ -4,7 +4,7 @@ from UNKnownDB.DB import LightDB
 
 
 with LightDB.File('./light') as db:
-    db - 'of:ef'
+    db - 'forkful:fatuity'
 with open('./light.unl') as light:
     print(light.read())
 # db = DB.LocalDB("./.Clever.unp")

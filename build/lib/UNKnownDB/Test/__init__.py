@@ -1,19 +1,11 @@
 # import DB
-from UNKnownDB.UNDL import Interpreter, APP
-# from UNKnownDB import DB
+# from UNKnownDB.UNDL import Interpreter, APP
+from UNKnownDB.DB import LightDB
 
 
-with open('./.Clever.unp/Guide.undl') as code:
-    lines = code.readlines()
-inter = Interpreter.Interpret(lines)
-inter.dictionary()
-form = Interpreter.Form(inter.Form, inter.FormDict)
-inter.dictionary()
-app = APP.Tree()
-app.init_ui()
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    ex = App()
-    sys.exit(app.exec_())
+with LightDB.File('./light') as db:
+    db - 'effectiveness:ef'
+with open('./light.unl') as light:
+    print(light.read())
 # db = DB.LocalDB("./.Clever.unp")
 # db.create()
