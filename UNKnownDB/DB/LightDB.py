@@ -39,13 +39,13 @@ class File:
 
     def __sub__(self, other):
         """-"""
+        changing = str(self.DB.read(), 'utf-8')
         write = re.findall('(.+):(.+)', other)
         change = '' + write[0][0] + '' + write[0][1] + ''
-        change_list = [(m.group(), m.span()) for m in re.finditer(change, str(self.DB.read(), 'utf-8'))]
+        change_list = [(m.group(), m.span()) for m in re.finditer(change, changing)]
         self.DB.seek(change_list[0][1][0], 0)
-        changing = str(self.DB.read(), 'utf-8')
         self.DB.truncate(change_list[0][1][0])
-        self.DB.seek(0, 1)
+        self.DB.seek(0, 2)
         self.DB.write(bytes(changing[change_list[0][1][1]:], 'utf-8'))
         return self
 
