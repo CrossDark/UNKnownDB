@@ -5,7 +5,7 @@ import os
 import re
 
 
-class File:
+class Data:
     def __init__(self, path, name='light'):
         self.path = path + '.unl'
         self.name = name
@@ -16,17 +16,13 @@ class File:
             open_.write(bytes('' + self.name + '', 'UTF-8'))
             open_.close()
         self.DB = open(self.path, 'rb+')
-        self.DB.readable()
-        self.DB.writable()
+        self.read = self.DB.read()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.DB.close()
-        pass
-        self.DB = open(self.path, 'r')
-        dbb = self.DB.read()
-        self.DB.close()
-        print(dbb)
+        with open(self.path, 'r') as db:
+            dbb = db.read()
         with open(self.path, 'w') as new:
             new.write(dbb.replace(chr(0), ''))
 
@@ -39,6 +35,7 @@ class File:
 
     def __sub__(self, other):
         """-"""
+        self.DB.seek(0, 0)
         changing = str(self.DB.read(), 'utf-8')
         write = re.findall('(.+):(.+)', other)
         change = '' + write[0][0] + '' + write[0][1] + ''
@@ -51,8 +48,8 @@ class File:
 
     def __setitem__(self, key, value):
         """[] = ?"""
-        if '' + key + '' in str(self.DB.read(), 'utf-8'):
-            print(9999)
+        self.DB.seek(0, 0)
+        if '' + key + '' in str(self.read, 'utf-8'):
             change_list = [(m.group(), m.span()) for m in re.finditer('' + key + '.+?', str(self.DB.read(), 'utf-8'))]
             self.DB.seek(change_list[0][1][0])
             self.DB.write(bytes('' + key + '' + value + '', 'utf-8'))
@@ -62,6 +59,27 @@ class File:
 
     def __getitem__(self, item):
         """[]"""
+        self.DB.seek(0, 0)
         returns =  [(m.group(), m.span()) for m in re.finditer('' + item + '.+?', str(self.DB.read(), 'utf-8'))]
-        print(returns)
         return [re.sub('|||' + item, '', i[0]) for i in returns]
+
+    def all(self):
+        for m in re.finditer('.+?.+?', str(self.read, 'utf-8')):
+            yield m.span()
+
+    def find(self):
+        pass
+
+
+class File(Data):
+    def __add__(self, other):
+        """+"""
+        write = re.findall('(.+):(.+)', other)
+        self.DB.seek(0, 2)
+        if os.path.isfile(write[0][1]) is True:
+            split = os.path.split(write[0][1])
+            os.rename(write[0][1], str(hash(split[0])) + '.unf' + split[1])
+            self.DB.write(bytes('' + write[0][0] + '' + os.path.abspath(write[0][1]) + '', 'utf-8'))
+        else:
+            return False
+        return self
