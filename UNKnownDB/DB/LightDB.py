@@ -67,7 +67,7 @@ class Data:
 
     def all(self):
         for m in re.finditer('.+?.+?', str(self.read, 'utf-8')):
-            yield m.span()
+            return re.sub('|||', '',  m.group(),), m.span()
 
     def find(self):
         pass
