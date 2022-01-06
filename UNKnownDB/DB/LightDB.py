@@ -51,7 +51,9 @@ class Data:
         self.DB.seek(0, 0)
         if '' + key + '' in str(self.read, 'utf-8'):
             change_list = [(m.group(), m.span()) for m in re.finditer('' + key + '.+?', str(self.DB.read(), 'utf-8'))]
-            self.DB.seek(change_list[0][1][0])
+            self.DB.seek(change_list[0][1][0], 0)
+            self.DB.truncate(change_list[0][1][0])
+            self.DB.seek(0, 2)
             self.DB.write(bytes('' + key + '' + value + '', 'utf-8'))
         else:
             self.DB.seek(0, 2)
