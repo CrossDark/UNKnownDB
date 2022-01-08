@@ -9,9 +9,12 @@ class Data:
     def __init__(self, path, name='light'):
         self.path = path + '.unl'
         self.name = name
+        self.path_list = []
 
     def __enter__(self):
-        if not os.path.isfile(self.path):
+        try:
+            self.find()
+        finally:
             open_ = open(self.path, 'wb')
             open_.write(bytes('' + self.name + '', 'UTF-8'))
             open_.close()
@@ -77,7 +80,7 @@ class Data:
             if os.path.isfile(path_file):
                 if os.path.splitext(path_file)[1] == '.unl':
                     with open(path_file) as check:
-                        if self.name == check.read().replace('', '')[0:-1]:
+                        if re.match('.+?' + self.name + '.+?', check.read()):
                             self.path = path_file
             elif os.path.basename(path_file)[0] == '.':
                 pass

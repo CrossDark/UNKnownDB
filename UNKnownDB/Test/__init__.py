@@ -5,9 +5,8 @@ from UNKnownDB.DB import LightDB
 with LightDB.Data('light') as db:
     db + 'ed:de'
     db - 'ed:de'
-    db['fge'] = 'ef0'
-    db.find()
-    print(db.path)
+    db['fget'] = 'e5f0'
+    print(db.path_list)
 
 with open('./light.unl') as light:
     print(light.read())
