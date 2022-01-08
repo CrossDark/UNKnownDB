@@ -13,29 +13,24 @@ class Data:
 
     def __enter__(self):
         try:
-            self.find()
-        finally:
+            self.__find()
+        except FileNotFoundError:
             open_ = open(self.path, 'wb')
-            open_.write(bytes('' + self.name + '', 'UTF-8'))
+            open_.write(bytes('' + self.name + '00', 'UTF-8'))
             open_.close()
         self.DB = open(self.path, 'rb+')
-        self.read = self.DB.read()
         self.DB.seek(0, 0)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.DB.close()
-        with open(self.path, 'r') as db:
-            dbb = db.read()
-        with open(self.path, 'w') as new:
-            new.write(dbb.replace(chr(0), ''))
-        del self
 
     def __add__(self, other):
         """+"""
         write = re.findall('(.+):(.+)', other)
         self.DB.seek(0, 2)
         self.DB.write(bytes('' + write[0][0] + '' + write[0][1] + '', 'utf-8'))
+        self.DB.seek(0, 0)
         return self
 
     def __sub__(self, other):
@@ -54,7 +49,7 @@ class Data:
     def __setitem__(self, key, value):
         """[] = ?"""
         self.DB.seek(0, 0)
-        if '' + key + '' in str(self.read, 'utf-8'):
+        if '' + key + '' in str(self.DB.read(), 'utf-8'):
             change_list = [(m.group(), m.span()) for m in re.finditer('' + key + '.+?', str(self.DB.read(), 'utf-8'))]
             self.DB.seek(change_list[0][1][0], 0)
             self.DB.truncate(change_list[0][1][0])
@@ -63,6 +58,7 @@ class Data:
         else:
             self.DB.seek(0, 2)
             self.DB.write(bytes('' + key+ '' + value + '', 'utf-8'))
+        self.DB.seek(0, 0)
 
     def __getitem__(self, item):
         """[]"""
@@ -70,22 +66,29 @@ class Data:
         returns =  [(m.group(), m.span()) for m in re.finditer('' + item + '.+?', str(self.DB.read(), 'utf-8'))]
         return [re.sub('|||' + item, '', i[0]) for i in returns]
 
-    def all(self):
-        for m in re.finditer('.+?.+?', str(self.read, 'utf-8')):
+    def __repr__(self):
+        return self.__all()
+
+    def __len__(self):
+        return len([m.group() for m in self.__all()])
+
+    def __all(self):
+        self.DB.seek(0 ,0)
+        for m in re.finditer('.+?.+?', str(self.DB.read(), 'utf-8')):
             yield m
 
-    def find(self, path=os.path.expanduser('~')):
+    def __find(self, path=os.path.expanduser('~')):
         for i in os.listdir(path):
             path_file = os.path.join(path, i)
             if os.path.isfile(path_file):
                 if os.path.splitext(path_file)[1] == '.unl':
-                    with open(path_file) as check:
+                    with open(path_file, 'r') as check:
                         if re.match('.+?' + self.name + '.+?', check.read()):
                             self.path = path_file
             elif os.path.basename(path_file)[0] == '.':
                 pass
             else:
-                self.find(path_file)
+                self.__find(path_file)
 
 
 class File(Data):

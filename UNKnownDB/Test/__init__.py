@@ -3,10 +3,7 @@
 from UNKnownDB.DB import LightDB
 
 with LightDB.Data('light') as db:
-    db + 'ed:de'
-    db - 'ed:de'
-    db['fget'] = 'e5f0'
-    print(db.path_list)
+    db['fff'] = 'ef'
 
 with open('./light.unl') as light:
     print(light.read())
