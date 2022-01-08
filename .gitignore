@@ -1,4 +1,4 @@
 dist/
 build/
-UNKnownDB.egg-info/
-UNKnownDB/Test/
+UNKnownDB.egg-info/*
+UNKnownDB/Test/*
