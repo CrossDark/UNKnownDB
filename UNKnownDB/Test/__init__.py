@@ -6,10 +6,10 @@ with LightDB.Data('./light') as db:
     db + 'ed:de'
     db - 'ed:de'
     db['fe'] = 'ef0'
-    for print_ in db.find():
-        print(print_)
+    print(db.find())
 
 with open('./light.unl') as light:
-    print(light.read())
+    # print(light.read())
+    pass
 # db = DB.LocalDB("./.Clever.unp")
 # db.create()
