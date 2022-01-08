@@ -10,13 +10,14 @@ class Data:
         self.path = path + '.unl'
         self.name = name
 
-    def __enter__(self, ):
+    def __enter__(self):
         if not os.path.isfile(self.path):
             open_ = open(self.path, 'wb')
             open_.write(bytes('' + self.name + '', 'UTF-8'))
             open_.close()
         self.DB = open(self.path, 'rb+')
         self.read = self.DB.read()
+        self.DB.seek(0, 0)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -25,6 +26,7 @@ class Data:
             dbb = db.read()
         with open(self.path, 'w') as new:
             new.write(dbb.replace(chr(0), ''))
+        del self
 
     def __add__(self, other):
         """+"""
@@ -67,10 +69,18 @@ class Data:
 
     def all(self):
         for m in re.finditer('.+?.+?', str(self.read, 'utf-8')):
-            return re.sub('|||', '',  m.group(),), m.span()
+            yield m
 
-    def find(self):
-        pass
+    def find(self, path=os.path.expanduser('~')):
+        for i in os.listdir(path):
+            path_file = os.path.join(path, i)
+            if os.path.isfile(path_file):
+                if os.path.splitext(path_file)[1] == '.unl':
+                    yield path_file
+            elif os.path.basename(path_file)[0] == '.':
+                pass
+            else:
+                self.find(path_file)
 
 
 class File(Data):
