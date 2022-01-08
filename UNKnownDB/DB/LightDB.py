@@ -77,8 +77,8 @@ class Data:
             if os.path.isfile(path_file):
                 if os.path.splitext(path_file)[1] == '.unl':
                     with open(path_file) as check:
-                        print(check.read())
-                        return check.read()
+                        if self.name == check.read().replace('', '')[0:-1]:
+                            self.path = path_file
             elif os.path.basename(path_file)[0] == '.':
                 pass
             else:
