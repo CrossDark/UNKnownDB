@@ -3,10 +3,9 @@
 from UNKnownDB.DB import LightDB
 
 with LightDB.Data('light') as db:
-    db['fff'] = 'ef'
+    print(len(db))
 
 with open('./light.unl') as light:
     print(light.read())
-    pass
 # db = DB.LocalDB("./.Clever.unp")
 # db.create()

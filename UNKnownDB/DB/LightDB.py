@@ -66,11 +66,24 @@ class Data:
         returns =  [(m.group(), m.span()) for m in re.finditer('' + item + '.+?', str(self.DB.read(), 'utf-8'))]
         return [re.sub('|||' + item, '', i[0]) for i in returns]
 
+    def __delitem__(self, key):
+        delete = re.findall('' + key + '(.+?)', str(self.DB.read(), 'utf-8'))
+        self.__sub__(key + ':' + delete[0])
+
+    def __str__(self):
+        return re.sub('[]',' ', str(self.DB.read(), 'utf-8'))
+
     def __repr__(self):
         return self.__all()
 
     def __len__(self):
         return len([m.group() for m in self.__all()])
+
+    def __int__(self):
+        return 1
+
+    def __missing__(self, key):
+        return key + 'not find'
 
     def __all(self):
         self.DB.seek(0 ,0)
