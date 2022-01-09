@@ -10,6 +10,8 @@ class Data:
         self.path = path + '.unl'
         self.name = name
         self.path_list = []
+        self.split = None
+        self.split_index = 0
 
     def __enter__(self):
         try:
@@ -84,6 +86,22 @@ class Data:
 
     def __missing__(self, key):
         return key + 'not find'
+
+    def __iter__(self):
+        self.__split()
+        return self
+
+    def __next__(self):
+        self.split_index += 1
+        try:
+            return self.split[self.split_index - 1]
+        except IndexError:
+            raise StopIteration
+
+    def __split(self):
+        self.split = re.split('[]', str(self.DB.read(), 'utf-8'))
+        self.split.remove('light')
+        self.split = [i for i in self.split if i != '']
 
     def __all(self):
         self.DB.seek(0 ,0)
