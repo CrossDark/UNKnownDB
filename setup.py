@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='UNKnownDB',
-    version='1.6.2',
+    version='163.0',
     author='CleaverCreator',
     author_email='liuhanbo333@icloud.com',
     packages=find_packages(),
