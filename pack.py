@@ -1,4 +1,4 @@
-import os
+# import os
 import time
 import re
 from UNKnownDB.DB import LocalDB
@@ -9,7 +9,8 @@ with open('./setup.py', 'r+') as setup:
     find = re.findall('version=(.+?),', read)
     v_id = float(eval(find[0].replace('.', '')))
     setup.seek(0, 0)
-    writing = read.replace(find[0], "'" + str(v_id + 1) + "'")
+    num = str(v_id + 1)
+    writing = read.replace(find[0], "'" + num[0] + '.' + num[1] + '.' + num[2] + "'")
     setup.write(writing[:-1])
 # os.system('python3 setup.py sdist bdist_wheel')
 time.sleep(5)
